@@ -14,7 +14,7 @@ require 'pry'
 
 # Encipher secrets storage
 module Encipher
-  def self.load(*filenames)
+  def self.load_env
     @encipher = Encipher::Secrets.new('~/.ssh/id_rsa')
 
     @encipher.secrets.each do |name|

@@ -1,7 +1,6 @@
 # Encipher
 
-A public-key encryption based secrets storage solution. Will soon interface with both
-secrets.yml and dotenv
+A public-key encryption based secrets storage solution. 
 
 ## Installation
 
@@ -31,13 +30,64 @@ To store a secret:
 To retreive a secret:
 
     encipher get "secret name"
+    
+To load, encrypt, and store the contents of a dotenv file (note: this does not delete the .env file, it only loads the contents.  It is up to you to delete it yourself for security purposes.):
 
-## Loading
+    encipher dotenv
+
+
+## Loading enviornment variables
 
 Encipher can also be used to load the available secrets into the enviornment.  As early as possible in your application simple do:
 
 	require 'encipher'
-    Encipher.load
+    Encipher.load_env
+    
+## Future Thoughts
+
+Store login information
+
+    > encipher set login github my@email.com xxxxxxxx
+	
+Store login information via prompt
+
+    > encipher set login
+    Username/email: my@email.com
+    Password: xxxxxxxx
+	Description: github
+
+View login information
+
+	> encipher get login github
+		User: my@email.com
+	Password: xxxxxxxx
+	
+View login information via prompt
+
+	> encipher get login
+	Login information available for:
+	  1. github
+	  2. urban airship
+	  3. apple developer center
+	  
+	Which would you like to view? 1.
+	
+	User: my@email.com
+	Password: xxxxxxxx
+
+		
+	> encipher get login github.com
+
+Set enviornment variable
+
+    > encipher set env TEST_ENV_KEY xxxxxxxxxx
+    	
+Set enviornment variable via prompt
+
+    > encipher set env
+    key: TEST_ENV_KEY
+    value: env_key_value_here
+	
 
 ## Contributing
 

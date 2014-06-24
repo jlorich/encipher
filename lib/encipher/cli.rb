@@ -11,22 +11,6 @@ require 'encipher/dotenv'
 module Encipher
   # Encipher command line interface
   class CLI < Thor
-    desc 'lint', 'Lints the given project directory'
-    def lint
-      clint = load_and_configure
-
-      # rubocop:disable Rails/Output
-      if clint.enforce
-        puts 'Project passed the linter successfully'
-      else
-        if options[:warn]
-          puts 'Linting Failed'
-        else
-          abort('Linting Failed')
-        end
-      end
-      # rubocop:enable Rails/Output
-    end
 
     desc 'init', 'loads they key at the given keypath'
     def init(key_path = '~/.ssh/id_rsa')
