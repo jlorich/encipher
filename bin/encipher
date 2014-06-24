@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'encipher/cli'
+
+Encipher::CLI.start(ARGV)
