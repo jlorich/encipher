@@ -1,33 +1,45 @@
-require 'pry'
+#Encipher
 module Encipher
+  # Handles key loading, encryption, and decryption
   class Security
-    @private_key = nil
-    @public_key = nil
 
+    # Loads the private key
     def initialize(private_key)
-      binding.pry
       @private_key = Net::SSH::KeyFactory.load_private_key(private_key)
     end
 
+    # Returns the pem public key associated with this security object
     def public_key
-      @private_key.public_key.to_s
+      require_key
+
+      @private_key.public_key.to_pem
     end
 
-    def parse_public_key(public_key)
-      Net::SSH::KeyFactory.load_data_public_key(public_key).to_s
-    end
-
+    # Encrypts a string of text with the given public key
     def encrypt(string, public_key = nil)
-      fail 'No key specified' if !public_key && !@private_key 
+      require_key unless public_key
 
-      key =  OpenSSL::PKey::RSA.new(@private_key.public_key.to_pem)
+      key =  OpenSSL::PKey::RSA.new(public_key || @private_key.public_key.to_pem)
 
       Base64.encode64(key.public_encrypt(string))
     end
 
+    # Decrypts a string of text with the current private key
     def decrypt(string)
-      raise Exception.new("no private key loaded") unless @private_key
+      require_key
+
       @private_key.private_decrypt(Base64.decode64(string))
     end
+
+    private 
+
+    # Raises an error if no private key has been loaded
+    def require_key
+      fail InvalidKeyError.new("No private key loaded") unless @private_key
+    end
+  end
+
+  # An invalid key error
+  class InvalidKeyError < StandardError
   end
 end

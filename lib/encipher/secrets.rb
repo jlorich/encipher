@@ -60,9 +60,11 @@ module Encipher
       end
     end
 
+    # Gets the current user object
     def current_user
-      User.first
+      User.all(public_key: @security.public_key).first
     end
+
 
     # Store a new secret
     def store(name, value)
