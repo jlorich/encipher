@@ -12,11 +12,6 @@ module Encipher
     property :id,          Serial
     property :value,       Text
 
-
-    # def value
-    #   unlocked? ? unlocked_value : super
-    # end
-
     def value=(v)
       fail "Secret must be unlocked to set the value" if locked?
 
