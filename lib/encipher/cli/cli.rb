@@ -1,7 +1,4 @@
 require 'encipher/cli/base'
-require 'encipher/cli/get'
-require 'encipher/cli/set'
-require 'encipher/cli/list'
 require 'encipher/cli/convert'
 require 'exedit'
 require 'json'

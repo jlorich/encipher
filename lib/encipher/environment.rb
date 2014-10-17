@@ -1,7 +1,7 @@
 require 'yaml'
 require 'encipher'
 require 'encipher/vault'
-require 'pry'
+require 'recursive-open-struct'
 
 module Encipher
   # Enviornment variable storage
@@ -37,7 +37,7 @@ module Encipher
     end
 
     def get_hash
-      {}.tap do |result|
+      RecursiveOpenStruct.new.tap do |result|
         all.map do |secret|
           result[secret[:name]] = secret[:value]
         end

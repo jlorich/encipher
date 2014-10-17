@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "encipher"
   spec.version       = Encipher::VERSION
   spec.authors       = ["Joey Lorich"]
-  spec.email         = ["jospeh@lorich.me"]
+  spec.email         = ["joseph@lorich.me"]
   spec.summary       = %q{Secure secrets management}
   spec.description   = %q{Secure secrets management description!}
   spec.homepage      = ""
@@ -32,8 +32,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'data_mapper', '~> 1.2.0'
   spec.add_dependency 'dm-sqlite-adapter', '~> 1.2.0'
   spec.add_dependency 'dot_configure', '~> 0.0.1'
-  spec.add_dependency 'exedit', '~> 0.0.1'
+  spec.add_dependency 'exedit', '~> 0.0.2'
   spec.add_dependency 'awesome_print', '~> 1.2.0'
+  spec.add_dependency 'recursive-open-struct', '~> 0.5.0'
 
   spec.executables = ['encipher']
 end
