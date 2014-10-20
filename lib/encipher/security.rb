@@ -1,4 +1,4 @@
-#Encipher
+# Encipher
 module Encipher
   # Handles key loading, encryption, and decryption
   class Security
@@ -31,15 +31,11 @@ module Encipher
       @private_key.private_decrypt(Base64.decode64(string))
     end
 
-    private 
+    private
 
     # Raises an error if no private key has been loaded
     def require_key
-      fail InvalidKeyError.new("No private key loaded") unless @private_key
+      fail 'No private key loaded' unless @private_key
     end
-  end
-
-  # An invalid key error
-  class InvalidKeyError < StandardError
   end
 end

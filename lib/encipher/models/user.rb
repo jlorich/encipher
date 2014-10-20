@@ -1,6 +1,7 @@
 require 'data_mapper'
 
 module Encipher
+  # An encipher user
   class User
     include DataMapper::Resource
 

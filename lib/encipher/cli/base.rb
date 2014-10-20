@@ -30,8 +30,8 @@ module Encipher
 
         config_path = File.expand_path './.encipher'
 
-        if !File.exist? config_path
-          fail Exception.new 'You must run encipher init before running'
+        unless File.exist? config_path
+          fail 'You must run encipher init before running'
         end
 
         @config = OpenStruct.new YAML.load(File.read(config_path))

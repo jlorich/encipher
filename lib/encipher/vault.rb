@@ -26,19 +26,19 @@ module Encipher
     # unlocks a secrets contents
     def unlock(secret)
       secret.locked = false
-      secret.unlocked_value = nil ? !secret.value : YAML.load(security.decrypt(secret.value))
+      secret.unlocked_value = YAML.load(security.decrypt(secret.value))
       secret
     end
 
     def where(options)
       require_user
 
-      [].tap { |r| 
+      [].tap do |r|
         current_user.secrets.each do |secret|
           contents = unlock(secret).unlocked_value
           r << secret if compare(contents, { env: Encipher.env }.deep_merge(options))
         end
-      }
+      end
     end
 
     # checks if the keys/values in options are included in ojbect
@@ -51,12 +51,15 @@ module Encipher
     end
 
     # Enroll a new user's key or the current users
-    def enroll(key_path = nil)
-      #ssh_key ? Net::SSH::KeyFactory.load_data_public_key(ssh_key) :
+    def enroll(key = nil, path: nil)
+      fail 'Must specify key OR path, not both' unless (!!key ^ !!path) || !(key || path)
 
-      if key_path
-        raise Exception.new 'Bad key path' unless File.exist? File.expand_path(key_path)
-        key = File.read(key_path)
+      if path
+        fail 'Bad key path' unless File.exist? File.expand_path(path)
+        data = File.read(File.expand_path path)
+        key =  Net::SSH::KeyFactory.load_data_public_key(data).to_pem
+      elsif key
+        key = Net::SSH::KeyFactory.load_data_public_key(key).to_pem
       else
         key = security.public_key
       end
@@ -64,7 +67,7 @@ module Encipher
       if user_exists? key
         puts 'Key already enrolled'
       else
-        User.create(public_key: key) 
+        User.create(public_key: key)
         puts 'Key was successfully enrolled'
       end
     end
@@ -74,13 +77,16 @@ module Encipher
       User.all(public_key: public_key).count > 0
     end
 
-    # Revoke a user by key or name
-    def revoke(name: nil, key:nil)
+    # Revoke a user by id
+    def revoke(user_id)
       require_user
 
-      if key
-        User.all(public_key: key).destroy
+      user = User.find(user_id)
+      user.secrets.each do |secret|
+        secret.destroy
       end
+
+      user.destroy
     end
 
     protected
@@ -99,10 +105,10 @@ module Encipher
 
       @dm = DataMapper.setup(:default, "sqlite:///#{database_path}")
 
-      unless File.exist? database_path
-        SQLite3::Database.new(database_path)
-        DataMapper.auto_migrate!
-      end
+      return if File.exist? database_path
+
+      SQLite3::Database.new(database_path)
+      DataMapper.auto_migrate!
     end
 
     # Gets the current user object
@@ -111,7 +117,7 @@ module Encipher
     end
 
     def require_user
-      fail Exception.new 'Current user must be enrolled' unless current_user  
+      fail 'Current user must be enrolled' unless current_user
     end
   end
 end

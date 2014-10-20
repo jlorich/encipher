@@ -1,0 +1,47 @@
+Documentation:
+  Enabled: false
+
+EmptyLinesAroundBody:
+  Enabled: false
+
+LineLength:
+  Max: 120
+  Exclude: 
+
+ClassLength:
+  Enabled: true
+  CountComments: false
+  Max: 150
+
+MethodLength:
+  Enabled: false
+
+WhileUntilModifier:
+  Enabled: false
+
+ClassAndModuleChildren:
+  Enabled: false
+
+Rails/ActionFilter:
+  Enabled: false
+
+Rails/DefaultScope:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Rails/Output:
+  Enabled: false
+
+Rails/ReadWriteAttribute:
+  Enabled: false
+
+Rails/ScopeArgs:
+   Enabled: false
+
+Rails/Validation:
+  Enabled: false
+
+Rails/Delegate:
+  Enabled: false
